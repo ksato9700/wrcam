@@ -8,7 +8,9 @@
       <p id="errorMessage">Loading...</p>
     </section>
     <section id="app" hidden>
-      <p><video id="monitor" autoplay width="320"></video>
+      <p>
+	<video id="local_video" autoplay width="320"></video>
+	<video id="remote_video" autoplay width="320"></video>
 	<canvas id="photo"></canvas>
       <p><input id="snap" type=button value="&#x1F4F7;">
       <p><input id="recBtn" type="button" value="⚫" onclick="msgRecord()" >
@@ -16,14 +18,15 @@
     </section>
 
     <script>
-      video = document.getElementById('monitor');
-      canvas = document.getElementById('photo');
+      var local_video = document.getElementById('local_video');
+      var remote_video = document.getElementById('remote_video');
+      var canvas = document.getElementById('photo');
 
       function noStream () {
         document.getElementById('errorMessage').textContent = 'No camera available.';
       };
 
-      wrcam = new WRCam(video, canvas, noStream, function() {
+      wrcam = new WRCam(local_video, remote_video, canvas, noStream, function() {
         document.getElementById('splash').hidden = true;
         document.getElementById('app').hidden = false;
       });

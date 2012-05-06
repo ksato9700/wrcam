@@ -6,25 +6,34 @@
 
     WRCam.name = 'WRCam';
 
-    function WRCam(video, canvas, onended, onstart) {
+    function WRCam(local_video, remote_video, canvas, onended, onstart) {
       var _this = this;
-      this.video = video;
+      this.local_video = local_video;
+      this.remote_video = remote_video;
       this.canvas = canvas;
       navigator.webkitGetUserMedia("video,audio", function(stream) {
-        _this.video.src = webkitURL.createObjectURL(stream);
-        _this.video.onerror = function() {
+        _this.local_video.src = webkitURL.createObjectURL(stream);
+        _this.local_video.onerror = function() {
           return stream.stop();
         };
         stream.onended = onended;
-        return _this.stream = stream;
+        _this.stream = stream;
+        _this.local = new webkitDeprecatedPeerConnection("STUN stun.l.google.com:19302", function(message) {
+          return /(?:)/;
+        });
+        _this.local.addStream(_this.stream);
+        _this.local.onaddstream = function(event) {
+          return this.remote_video.src = webkitURL.createObjectURL(event.stream);
+        };
+        return console.log(_this.local);
       }, onended);
       onstart();
     }
 
     WRCam.prototype.snapshot = function() {
-      this.canvas.width = this.video.videoWidth;
-      this.canvas.height = this.video.videoHeight;
-      return this.canvas.getContext('2d').drawImage(this.video, 0, 0);
+      this.canvas.width = this.local_video.videoWidth;
+      this.canvas.height = this.local_video.videoHeight;
+      return this.canvas.getContext('2d').drawImage(this.local_video, 0, 0);
     };
 
     return WRCam;
