@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <script src="js/wrcam.js"></script>
+  </head>
+  <body>
+    <h1>WebRTC Cam</h1>
+    <section id="splash">
+      <p id="errorMessage">Loading...</p>
+    </section>
+    <section id="app" hidden>
+      <p><video id="monitor" autoplay width="320"></video>
+	<canvas id="photo"></canvas>
+      <p><input id="snap" type=button value="&#x1F4F7;">
+    </section>
+
+    <script>
+      video = document.getElementById('monitor');
+      canvas = document.getElementById('photo');
+
+      function noStream () {
+        document.getElementById('errorMessage').textContent = 'No camera available.';
+      };
+
+      wrcam = new WRCam(video, canvas, noStream, function() {
+        document.getElementById('splash').hidden = true;
+        document.getElementById('app').hidden = false;
+      });
+
+      document.getElementById('snap').onclick = function(){
+        wrcam.snapshot();
+      };
+
+    </script>
+
+  </body>
+</html>
