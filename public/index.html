@@ -11,6 +11,8 @@
       <p><video id="monitor" autoplay width="320"></video>
 	<canvas id="photo"></canvas>
       <p><input id="snap" type=button value="&#x1F4F7;">
+      <p><input id="recBtn" type="button" value="⚫" onclick="msgRecord()" >
+	<input id="stopBtn" type="button" value="◼" onclick="msgStop()" disabled>
     </section>
 
     <script>
@@ -28,6 +30,22 @@
 
       document.getElementById('snap').onclick = function(){
         wrcam.snapshot();
+      };
+
+      recBtn = document.getElementById('recBtn')
+      stopBtn = document.getElementById('stopBtn')
+
+      recBtn.onclick = function(){
+        wrcam.record(function(){
+          recBtn.disabled = true;
+          stopBtn.disabled = false;
+        });
+      };
+      stopBtn.onclick = function(){
+        wrcam.stop(function(){
+          recBtn.disabled = false;
+          stopBtn.disabled = true;
+        });
       };
 
     </script>
